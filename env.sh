@@ -13,11 +13,13 @@ export TF_VAR_region="Enter_Region_Here"
 export TF_VAR_image_ocid="Enter_Image_OCID_Here"
 #Enter Shape for Instance (Example: VM.Standard1.1)
 export TF_VAR_instance_shape="Enter_Shape_Here"
+#Enter Path to Your Public API Key
+export TF_VAR_public_key_path="Enter_Public_API_Key_Path_Here"
 #Enter Path to Your Private API Key
 export TF_VAR_private_key_path="Enter_Private_API_Key_Path_Here"
 #Enter Path to Your Public SSH Key
 export TF_VAR_ssh_public_key=$(cat Enter_Public_SSH_Key_Path_Here)
 #Enter Path to Your Private SSH Key
-export TF_VAR_ssh_authorized_private_key=$(cat Enter_Private_SSH_Key_Path_Here)
+export TF_VAR_ssh_private_key=$(cat Enter_Private_SSH_Key_Path_Here)
 #Enter Number of Users Needed for Training
 export TF_VAR_count="1"

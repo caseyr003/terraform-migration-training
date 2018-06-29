@@ -12,6 +12,19 @@ resource "oci_identity_user" "users" {
 	name = "user.${count.index}"
 }
 
+# Generate UI Passwords for all Users
+resource "oci_identity_ui_password" "ui_passwords" {
+  count = "${var.count}"
+	user_id = "${element(oci_identity_user.users.*.id, count.index)}"
+}
+
+# Generate Upload API Key for all Users
+resource "oci_identity_api_key" "api_keys" {
+	count = "${var.count}"
+	key_value = "${var.public_key_path}"
+	user_id = "${element(oci_identity_user.users.*.id, count.index)}"
+}
+
 # Create Groups
 resource "oci_identity_group" "groups" {
 	count = "${var.count}"
@@ -171,4 +184,29 @@ resource "null_resource" "compute_configs" {
       "sudo /tmp/config.sh ",
     ]
   }
+}
+
+output "accounts" {
+  value = "${formatlist("
+Account Details:
+ Tenancy OCID: %v
+ Region: %v
+ User OCID: %v
+ Console Password: %v
+ Fingerprint: %v
+ Private API Key: %v
+ Datacenter Compartment OCID: %v
+ Public IP: %v
+ Private SSH Key: %v
+ Cloud Compartment OCID: %v\n",
+ var.tenancy_ocid,
+ var.region,
+ oci_identity_user.users.*.id,
+ oci_identity_ui_password.ui_passwords.*.password,
+ var.fingerprint,
+ var.private_key_path,
+ oci_identity_compartment.customer_compartments.*.id,
+ oci_core_instance.compute_instances.*.public_ip,
+ var.ssh_private_key,
+ oci_identity_compartment.cloud_compartments.*.id)}"
 }
