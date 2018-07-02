@@ -119,6 +119,22 @@ resource "oci_core_security_list" "sls" {
     }
     protocol = "6"
     source = "0.0.0.0/0"
+  },
+  {
+    tcp_options {
+      "max" = 8080
+      "min" = 8080
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
+  },
+  {
+    tcp_options {
+      "max" = 3000
+      "min" = 3000
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
   }]
 }
 
